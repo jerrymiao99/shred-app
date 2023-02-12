@@ -1,10 +1,13 @@
 import './App.css';
 import LayoutFlow from './components/LayoutFlow';
+import { ReactFlowProvider } from 'reactflow';
 
 function App() {
   return (
     <div className="container">
-      <LayoutFlow></LayoutFlow>
+      <ReactFlowProvider>
+        <LayoutFlow />
+      </ReactFlowProvider>
     </div>
   );
 }
