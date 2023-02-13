@@ -9,6 +9,7 @@ import 'reactflow/dist/style.css';
 import { initialNodes, initialEdges } from '../nodes-edges.js';
 
 import '../index.css';
+import { getNodesEdges, updateNodesEdges } from '../trickService.js';
 
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
@@ -71,14 +72,16 @@ const LayoutFlow = () => {
   const onSave = useCallback(() => {
     if (rfInstance) {
       const flow = rfInstance.toObject();
-      localStorage.setItem(flowKey, JSON.stringify(flow));
+      updateNodesEdges(flow);
+      // updateNodesEdges(flow);
+      //localStorage.setItem(flowKey, JSON.stringify(flow));
     }
   }, [rfInstance]);
 
   const onRestore = useCallback(() => {
     const restoreFlow = async () => {
-      const flow = JSON.parse(localStorage.getItem(flowKey));
-
+      const response = await getNodesEdges();
+      const flow = response.data;
       if (flow) {
         const { x = 0, y = 0, zoom = 1 } = flow.viewport;
         setNodes(flow.nodes || []);
@@ -94,6 +97,8 @@ const LayoutFlow = () => {
     const newNode = {
       id: getNodeId(),
       data: { label: 'Added node' },
+      targetPosition: 'left',
+      sourcePosition: 'right',
       position: {
         x: Math.random() * window.innerWidth - 100,
         y: Math.random() * window.innerHeight,
@@ -131,13 +136,13 @@ const LayoutFlow = () => {
         onEdgeUpdateEnd={onEdgeUpdateEnd}
         onConnect={onConnect}
         onInit={setRfInstance}
-        connectionLineType={ConnectionLineType.SmoothStep}
+        connectionLineType={ConnectionLineType.Bezier}
         fitView
       />
       <div className="save__controls">
         <button onClick={onSave}>save</button>
         <button onClick={onRestore}>restore</button>
-        <button onClick={onAdd}>add node</button>
+        <button onClick={onAdd}>add trick</button>
       </div>
     </div>
   );
