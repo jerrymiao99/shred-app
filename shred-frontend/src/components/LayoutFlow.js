@@ -51,8 +51,6 @@ const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
   initialEdges
 );
 
-const flowKey = 'example-flow';
-
 const getNodeId = () => `randomnode_${+new Date()}`;
 
 const LayoutFlow = () => {
@@ -73,8 +71,6 @@ const LayoutFlow = () => {
     if (rfInstance) {
       const flow = rfInstance.toObject();
       updateNodesEdges(flow);
-      // updateNodesEdges(flow);
-      //localStorage.setItem(flowKey, JSON.stringify(flow));
     }
   }, [rfInstance]);
 
@@ -91,6 +87,11 @@ const LayoutFlow = () => {
     };
 
     restoreFlow();
+  }, [setNodes, setViewport]);
+
+  const onReset = useCallback(() => {
+    setNodes(layoutedNodes);
+    setEdges(layoutedEdges);
   }, [setNodes, setViewport]);
 
   const onAdd = useCallback(() => {
@@ -142,7 +143,8 @@ const LayoutFlow = () => {
       <div className="save__controls">
         <button onClick={onSave}>save</button>
         <button onClick={onRestore}>restore</button>
-        <button onClick={onAdd}>add trick</button>
+        <button onClick={onReset}>reset</button>
+        {/*<button onClick={onAdd}>add trick</button>*/}
       </div>
     </div>
   );
