@@ -1,5 +1,5 @@
 const position = { x: 0, y: 0 };
-const edgeType = 'default';
+const edgeType = 'straight';
 
 export const initialNodes = [
   {

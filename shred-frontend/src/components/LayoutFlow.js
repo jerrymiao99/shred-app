@@ -16,9 +16,12 @@ dagreGraph.setDefaultEdgeLabel(() => ({}));
 
 const nodeWidth = 172;
 const nodeHeight = 36;
+const proOptions = { hideAttribution: true };
 
 const getLayoutedElements = (nodes, edges) => {
-  dagreGraph.setGraph({ rankdir: 'LR' });
+  dagreGraph.setGraph({ rankdir: 'TB' });
+  dagreGraph.setGraph({ nodesep: 10, ranksep: 100 });
+
 
   nodes.forEach((node) => {
     dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
@@ -32,8 +35,8 @@ const getLayoutedElements = (nodes, edges) => {
 
   nodes.forEach((node) => {
     const nodeWithPosition = dagreGraph.node(node.id);
-    node.targetPosition = 'left';
-    node.sourcePosition = 'right';
+    node.targetPosition = 'top';
+    node.sourcePosition = 'bottom';
 
     node.position = {
       x: nodeWithPosition.x - nodeWidth / 2,
@@ -59,11 +62,10 @@ const LayoutFlow = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
   const [rfInstance, setRfInstance] = useState(null);
   const { setViewport } = useReactFlow();
-
   const onConnect = useCallback(
     (params) =>
       setEdges((eds) =>
-        addEdge({ ...params, type: ConnectionLineType.Bezier }, eds)
+        addEdge({ ...params, type: ConnectionLineType.Straight }, eds)
       ),
     []
   );
@@ -98,8 +100,8 @@ const LayoutFlow = () => {
     const newNode = {
       id: getNodeId(),
       data: { label: 'Added node' },
-      targetPosition: 'left',
-      sourcePosition: 'right',
+      targetPosition: 'top',
+      sourcePosition: 'bottom',
       position: {
         x: Math.random() * window.innerWidth - 100,
         y: Math.random() * window.innerHeight,
@@ -137,7 +139,8 @@ const LayoutFlow = () => {
         onEdgeUpdateEnd={onEdgeUpdateEnd}
         onConnect={onConnect}
         onInit={setRfInstance}
-        connectionLineType={ConnectionLineType.Bezier}
+        proOptions={proOptions}
+        connectionLineType={ConnectionLineType.Straight}
         fitView
       />
       <div className="save__controls">

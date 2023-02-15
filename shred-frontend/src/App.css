@@ -1,4 +1,10 @@
-.container {
-  height: 700px;
-  width: 700px;
+.react-flow-container {
+  height: 88vh;
+  width: 100vw;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
