@@ -5,88 +5,88 @@ export const initialNodes = [
   {
     id: '1',
     type: 'input',
-    data: { label: 'Ollie' },
+    data: { label: 'Ollie', isChecked: false },
     position,
   },
   {
     id: '2',
-    data: { label: 'Nollie' },
+    data: { label: 'Nollie', isChecked: false },
     position
   },
   {
     id: '3',
-    data: { label: 'Straight Air (XS)' },
+    data: { label: 'Straight Air (XS)', isChecked: false },
     position
   },
   {
     id: '4',
-    data: { label: 'Straight Air (S)' },
+    data: { label: 'Straight Air (S)', isChecked: false },
     position
   },
   {
     id: '5a',
-    data: { label: 'Indy' },
+    data: { label: 'Indy', isChecked: false },
     position
   },
   {
     id: '5b',
-    data: { label: 'Melon' },
+    data: { label: 'Melon', isChecked: false },
     position
   },
   {
     id: '5c',
-    data: { label: 'Mute' },
+    data: { label: 'Mute', isChecked: false },
     position
   },
   {
     id: '5d',
-    data: { label: 'Stalefish' },
+    data: { label: 'Stalefish', isChecked: false },
     position
   },
   {
     id: '6',
-    data: { label: 'Shifty' },
+    data: { label: 'Shifty', isChecked: false },
     position
   },
   {
     id: '7',
-    data: { label: 'Frontside 180' },
+    data: { label: 'Frontside 180', isChecked: false },
     position
   },
   {
     id: '8',
-    data: { label: 'Straight Air (M)' },
+    data: { label: 'Straight Air (M)', isChecked: false },
     position
   },
   {
     id: '9',
-    data: { label: 'Straight Air (L)' },
+    data: { label: 'Straight Air (L)', isChecked: false },
     position
   },
   {
     id: '10',
-    data: { label: 'Frontside 360' },
+    data: { label: 'Frontside 360', isChecked: false },
     position
   },
   {
     id: '11',
     type: 'input',
-    data: { label: '50-50' },
+    data: { label: '50-50', isChecked: false },
     position
   },
   {
     id: '12',
-    data: { label: 'Nose Grab' },
+    data: { label: 'Nose Grab', isChecked: false },
     position
   },
   {
     id: '13',
-    data: { label: 'Tail Grab' },
+    data: { label: 'Tail Grab', isChecked: false },
     position
   },
   {
     id: '14',
-    data: { label: 'Boardslide' },
+    data: { label: 'Boardslide', isChecked: false },
     position
   },
 ];

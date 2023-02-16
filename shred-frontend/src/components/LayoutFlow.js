@@ -11,6 +11,16 @@ import { initialNodes, initialEdges } from '../nodes-edges.js';
 import '../index.css';
 import { getNodesEdges, updateNodesEdges } from '../trickService.js';
 
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
 
@@ -61,14 +71,19 @@ const LayoutFlow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
   const [rfInstance, setRfInstance] = useState(null);
-  const { setViewport } = useReactFlow();
+  const { getNodes, setViewport } = useReactFlow();
+  const [open, setOpen] = useState(false);
+  const [checked, setChecked] = useState(false);
+  const nodeId = useRef(null);
+  const checkValue = useRef(null);
+
   const onConnect = useCallback(
     (params) =>
       setEdges((eds) =>
         addEdge({ ...params, type: ConnectionLineType.Straight }, eds)
       ),
-    []
-  );
+    []);
+
   const onSave = useCallback(() => {
     if (rfInstance) {
       const flow = rfInstance.toObject();
@@ -76,18 +91,17 @@ const LayoutFlow = () => {
     }
   }, [rfInstance]);
 
+  const restoreFlow = async () => {
+    const response = await getNodesEdges();
+    const flow = response.data;
+    if (flow) {
+      const { x = 0, y = 0, zoom = 1 } = flow.viewport;
+      setNodes(flow.nodes || []);
+      setEdges(flow.edges || []);
+      setViewport({ x, y, zoom });
+    }
+  };
   const onRestore = useCallback(() => {
-    const restoreFlow = async () => {
-      const response = await getNodesEdges();
-      const flow = response.data;
-      if (flow) {
-        const { x = 0, y = 0, zoom = 1 } = flow.viewport;
-        setNodes(flow.nodes || []);
-        setEdges(flow.edges || []);
-        setViewport({ x, y, zoom });
-      }
-    };
-
     restoreFlow();
   }, [setNodes, setViewport]);
 
@@ -96,19 +110,19 @@ const LayoutFlow = () => {
     setEdges(layoutedEdges);
   }, [setNodes, setViewport]);
 
-  const onAdd = useCallback(() => {
-    const newNode = {
-      id: getNodeId(),
-      data: { label: 'Added node' },
-      targetPosition: 'top',
-      sourcePosition: 'bottom',
-      position: {
-        x: Math.random() * window.innerWidth - 100,
-        y: Math.random() * window.innerHeight,
-      },
-    };
-    setNodes((nds) => nds.concat(newNode));
-  }, [setNodes]);
+  // const onAdd = useCallback(() => {
+  //   const newNode = {
+  //     id: getNodeId(),
+  //     data: { label: 'Added node' },
+  //     targetPosition: 'top',
+  //     sourcePosition: 'bottom',
+  //     position: {
+  //       x: Math.random() * window.innerWidth - 100,
+  //       y: Math.random() * window.innerHeight,
+  //     },
+  //   };
+  //   setNodes((nds) => nds.concat(newNode));
+  // }, [setNodes]);
 
   const onEdgeUpdateStart = useCallback(() => {
     edgeUpdateSuccessful.current = false;
@@ -127,6 +141,26 @@ const LayoutFlow = () => {
     edgeUpdateSuccessful.current = true;
   }, []);
 
+  const onNodeClick = useCallback((_, node) => {
+    setChecked(node.data.isChecked);
+    checkValue.current = node.data.isChecked;
+    nodeId.current = node.id;
+    setOpen(true);
+  }, []);
+
+  const handleConfirm = useCallback(() => {
+    setOpen(false);
+    setNodes(getNodes().map((node) => {
+      if (node.id === nodeId.current) {
+        node.data = {
+          ...node.data,
+          isChecked: checkValue.current
+        };
+      }
+      return node;
+    }));
+  }, [setNodes]);
+
   return (
     <div className="layoutflow">
       <ReactFlow
@@ -139,12 +173,45 @@ const LayoutFlow = () => {
         onEdgeUpdateEnd={onEdgeUpdateEnd}
         onConnect={onConnect}
         onInit={setRfInstance}
+        onNodeClick={onNodeClick}
         proOptions={proOptions}
         connectionLineType={ConnectionLineType.Straight}
         fitView
       />
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>Edit trick info</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            To subscribe to this website, please enter your email address here. We
+            will send updates occasionally.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Email Address"
+            type="email"
+            fullWidth
+            variant="standard"
+          />
+          <FormControlLabel
+            sx={{ mt: 1 }}
+            label="Mark trick as complete"
+            control={
+              <Switch checked={checked} onChange={() => {
+                setChecked(!checked);
+                checkValue.current = !checked;
+              }} />
+            }
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)}>Cancel</Button>
+          <Button onClick={handleConfirm}>Confirm</Button>
+        </DialogActions>
+      </Dialog>
       <div className="save__controls">
-        <button onClick={onSave}>save</button>
+        <button onClick={onSave}>save changes</button>
         <button onClick={onRestore}>restore</button>
         <button onClick={onReset}>reset</button>
         {/*<button onClick={onAdd}>add trick</button>*/}
