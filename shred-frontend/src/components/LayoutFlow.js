@@ -91,17 +91,17 @@ const LayoutFlow = () => {
     }
   }, [rfInstance]);
 
-  const restoreFlow = async () => {
-    const response = await getNodesEdges();
-    const flow = response.data;
-    if (flow) {
-      const { x = 0, y = 0, zoom = 1 } = flow.viewport;
-      setNodes(flow.nodes || []);
-      setEdges(flow.edges || []);
-      setViewport({ x, y, zoom });
-    }
-  };
   const onRestore = useCallback(() => {
+    const restoreFlow = async () => {
+      const response = await getNodesEdges();
+      const flow = response.data;
+      if (flow) {
+        const { x = 0, y = 0, zoom = 1 } = flow.viewport;
+        setNodes(flow.nodes || []);
+        setEdges(flow.edges || []);
+        setViewport({ x, y, zoom });
+      }
+    };
     restoreFlow();
   }, [setNodes, setViewport]);
 
@@ -161,6 +161,21 @@ const LayoutFlow = () => {
     }));
   }, [setNodes]);
 
+  const onInit = useCallback((reactFlowInstance) => {
+    const restoreFlow = async () => {
+      const response = await getNodesEdges();
+      const flow = response.data;
+      if (flow) {
+        const { x = 0, y = 0, zoom = 1 } = flow.viewport;
+        reactFlowInstance.setNodes(flow.nodes || []);
+        reactFlowInstance.setEdges(flow.edges || []);
+        reactFlowInstance.setViewport({ x, y, zoom });
+      }
+    };
+    restoreFlow();
+    setRfInstance(reactFlowInstance);
+  }, [setNodes, setViewport]);
+
   return (
     <div className="layoutflow">
       <ReactFlow
@@ -172,7 +187,7 @@ const LayoutFlow = () => {
         onEdgeUpdateStart={onEdgeUpdateStart}
         onEdgeUpdateEnd={onEdgeUpdateEnd}
         onConnect={onConnect}
-        onInit={setRfInstance}
+        onInit={onInit}
         onNodeClick={onNodeClick}
         proOptions={proOptions}
         connectionLineType={ConnectionLineType.Straight}
