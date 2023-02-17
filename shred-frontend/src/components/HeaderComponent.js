@@ -8,7 +8,7 @@ const HeaderComponent = () => {
   return (
     <Navbar bg="dark" variant="dark" expand="lg" style={{ height: '8vh' }}>
       <Container fluid>
-        <Navbar.Brand href="/" style={{ color: 'gold' }}>
+        <Navbar.Brand href="/" style={{ color: 'white' }}>
           <FontAwesomeIcon icon={faPersonSnowboarding} />{'  '}
           SHRED
         </Navbar.Brand>

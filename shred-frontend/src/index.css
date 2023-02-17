@@ -16,11 +16,29 @@
   margin-right: 10px;
 }
 
+.layoutflow .react-flow {
+  background: white;
+}
+
 .layoutflow .react-flow__handle {
-  width: 20px;
-  height: 10px;
-  border-radius: 3px;
-  background-color: #9f7aea;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: lightgray;
+}
+
+.layoutflow .react-flow__handle-top {
+  top: -16px;
+}
+
+.layoutflow .react-flow__handle-bottom {
+  bottom: -16px;
+}
+
+.layoutflow .react-flow__node {
+  width: 130px;
+  font-weight: bold;
+  border-width: 2px;
 }
 
 .save__controls {

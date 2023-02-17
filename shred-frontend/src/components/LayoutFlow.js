@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useRef } from 'react';
 import ReactFlow, {
   addEdge, ConnectionLineType, useNodesState, useEdgesState,
-  updateEdge, Controls, useReactFlow,
+  updateEdge, Background, useReactFlow,
 } from 'reactflow';
 import dagre from 'dagre';
 import 'reactflow/dist/style.css';
@@ -31,7 +31,7 @@ const proOptions = { hideAttribution: true };
 
 const getLayoutedElements = (nodes, edges) => {
   dagreGraph.setGraph({ rankdir: 'TB' });
-  dagreGraph.setGraph({ nodesep: 10, ranksep: 100 });
+  dagreGraph.setGraph({ nodesep: 10, ranksep: 130 });
 
 
   nodes.forEach((node) => {
@@ -206,14 +206,12 @@ const LayoutFlow = () => {
         onNodeClick={onNodeClick}
         proOptions={proOptions}
         connectionLineType={ConnectionLineType.Straight}
-        fitView
-      />
+        fitView>
+        <Background color="#C8C8C8" size='2' variant='dots' />
+      </ReactFlow>
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Add notes or mark the trick as complete
-          </DialogContentText>
           <TextField
             sx={{ mt: 2 }}
             id="trick-notes"
