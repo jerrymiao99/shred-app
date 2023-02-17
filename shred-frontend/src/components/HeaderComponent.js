@@ -10,7 +10,7 @@ const HeaderComponent = () => {
       <Container fluid>
         <Navbar.Brand href="/" style={{ color: 'white' }}>
           <FontAwesomeIcon icon={faPersonSnowboarding} />{'  '}
-          SHRED
+          Shred
         </Navbar.Brand>
       </Container>
     </Navbar>
