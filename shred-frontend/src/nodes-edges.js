@@ -5,88 +5,88 @@ export const initialNodes = [
   {
     id: '1',
     type: 'input',
-    data: { label: 'Ollie', isChecked: false },
+    data: { label: 'Ollie', isChecked: false, inProgress: false, notes: "" },
     position,
   },
   {
     id: '2',
-    data: { label: 'Nollie', isChecked: false },
+    data: { label: 'Nollie', isChecked: false, inProgress: false, notes: "" },
     position
   },
   {
     id: '3',
-    data: { label: 'Straight Air (XS)', isChecked: false },
+    data: { label: 'Straight Air (XS)', isChecked: false, inProgress: false, notes: "" },
     position
   },
   {
     id: '4',
-    data: { label: 'Straight Air (S)', isChecked: false },
+    data: { label: 'Straight Air (S)', isChecked: false, inProgress: false, notes: "" },
     position
   },
   {
     id: '5a',
-    data: { label: 'Indy', isChecked: false },
+    data: { label: 'Indy', isChecked: false, inProgress: false, notes: "" },
     position
   },
   {
     id: '5b',
-    data: { label: 'Melon', isChecked: false },
+    data: { label: 'Melon', isChecked: false, inProgress: false, notes: "" },
     position
   },
   {
     id: '5c',
-    data: { label: 'Mute', isChecked: false },
+    data: { label: 'Mute', isChecked: false, inProgress: false, notes: "" },
     position
   },
   {
     id: '5d',
-    data: { label: 'Stalefish', isChecked: false },
+    data: { label: 'Stalefish', isChecked: false, inProgress: false, notes: "" },
     position
   },
   {
     id: '6',
-    data: { label: 'Shifty', isChecked: false },
+    data: { label: 'Shifty', isChecked: false, inProgress: false, notes: "" },
     position
   },
   {
     id: '7',
-    data: { label: 'Frontside 180', isChecked: false },
+    data: { label: 'Frontside 180', isChecked: false, inProgress: false, notes: "" },
     position
   },
   {
     id: '8',
-    data: { label: 'Straight Air (M)', isChecked: false },
+    data: { label: 'Straight Air (M)', isChecked: false, inProgress: false, notes: "" },
     position
   },
   {
     id: '9',
-    data: { label: 'Straight Air (L)', isChecked: false },
+    data: { label: 'Straight Air (L)', isChecked: false, inProgress: false, notes: "" },
     position
   },
   {
     id: '10',
-    data: { label: 'Frontside 360', isChecked: false },
+    data: { label: 'Frontside 360', isChecked: false, inProgress: false, notes: "" },
     position
   },
   {
     id: '11',
     type: 'input',
-    data: { label: '50-50', isChecked: false },
+    data: { label: '50-50', isChecked: false, inProgress: false, notes: "" },
     position
   },
   {
     id: '12',
-    data: { label: 'Nose Grab', isChecked: false },
+    data: { label: 'Nose Grab', isChecked: false, inProgress: false, notes: "" },
     position
   },
   {
     id: '13',
-    data: { label: 'Tail Grab', isChecked: false },
+    data: { label: 'Tail Grab', isChecked: false, inProgress: false, notes: "" },
     position
   },
   {
     id: '14',
-    data: { label: 'Boardslide', isChecked: false },
+    data: { label: 'Boardslide', isChecked: false, inProgress: false, notes: "" },
     position
   },
 ];

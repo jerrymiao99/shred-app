@@ -19,6 +19,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
 import Switch from '@mui/material/Switch';
 
 const dagreGraph = new dagre.graphlib.Graph();
@@ -74,8 +75,13 @@ const LayoutFlow = () => {
   const { getNodes, setViewport } = useReactFlow();
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(false);
+  const [notes, setNotes] = useState("");
+  const [title, setTitle] = useState("");
+  const [prog, setProg] = useState(false);
+  const notesValue = useRef("");
   const nodeId = useRef(null);
-  const checkValue = useRef(null);
+  const checkValue = useRef(false);
+  const progValue = useRef(false);
 
   const onConnect = useCallback(
     (params) =>
@@ -100,6 +106,8 @@ const LayoutFlow = () => {
         setNodes(flow.nodes || []);
         setEdges(flow.edges || []);
         setViewport({ x, y, zoom });
+      } else {
+        onReset();
       }
     };
     restoreFlow();
@@ -145,6 +153,11 @@ const LayoutFlow = () => {
     setChecked(node.data.isChecked);
     checkValue.current = node.data.isChecked;
     nodeId.current = node.id;
+    setNotes(node.data.notes)
+    notesValue.current = node.data.notes;
+    setTitle(node.data.label);
+    setProg(node.data.inProgress);
+    progValue.current = node.data.inProgress;
     setOpen(true);
   }, []);
 
@@ -154,7 +167,9 @@ const LayoutFlow = () => {
       if (node.id === nodeId.current) {
         node.data = {
           ...node.data,
-          isChecked: checkValue.current
+          isChecked: checkValue.current,
+          inProgress: progValue.current,
+          notes: notesValue.current
         };
       }
       return node;
@@ -194,31 +209,59 @@ const LayoutFlow = () => {
         fitView
       />
       <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>Edit trick info</DialogTitle>
+        <DialogTitle>{title}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To subscribe to this website, please enter your email address here. We
-            will send updates occasionally.
+            Add notes or mark the trick as complete
           </DialogContentText>
           <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
+            sx={{ mt: 2 }}
+            id="trick-notes"
+            label="Notes"
+            defaultValue={notes}
+            multiline
+            rows={3}
             fullWidth
-            variant="standard"
+            margin="dense"
+            onChange={(evt) => {
+              notesValue.current = evt.target.value;
+            }}
           />
-          <FormControlLabel
-            sx={{ mt: 1 }}
-            label="Mark trick as complete"
-            control={
-              <Switch checked={checked} onChange={() => {
-                setChecked(!checked);
-                checkValue.current = !checked;
-              }} />
-            }
-          />
+          <FormGroup>
+            <FormControlLabel
+              sx={{ mt: 1 }}
+              label="In progress"
+              control={
+                <Switch checked={prog} onChange={() => {
+                  if (!prog) {
+                    if (checked) {
+                      setChecked(false);
+                      checkValue.current = false;
+                    }
+                    setProg(true);
+                    progValue.current = true;
+                  } else {
+                    setProg(false);
+                    progValue.current = false;
+                  }
+                }} />
+              }
+            />
+            <FormControlLabel
+              sx={{ mt: 1 }}
+              label="Trick completed"
+              control={
+                <Switch checked={checked} onChange={() => {
+                  setChecked(!checked);
+                  checkValue.current = !checked;
+                  if (prog) {
+                    setProg(false);
+                    progValue.current = false;
+                  }
+                }} />
+              }
+            />
+          </FormGroup>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(false)}>Cancel</Button>
