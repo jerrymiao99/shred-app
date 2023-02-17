@@ -41,6 +41,14 @@
   border-width: 2px;
 }
 
+.layoutflow .prog-node {
+  background-color: #F9F871;
+}
+
+.layoutflow .finished-node {
+  background-color: #00EAC2;
+}
+
 .save__controls {
   position: absolute;
   right: 10px;

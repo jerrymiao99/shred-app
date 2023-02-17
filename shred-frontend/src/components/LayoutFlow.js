@@ -169,8 +169,13 @@ const LayoutFlow = () => {
           ...node.data,
           isChecked: checkValue.current,
           inProgress: progValue.current,
-          notes: notesValue.current
+          notes: notesValue.current,
         };
+        if (progValue.current) {
+          node.className = "prog-node";
+        } else if (checkValue.current) {
+          node.className = "finished-node";
+        }
       }
       return node;
     }));

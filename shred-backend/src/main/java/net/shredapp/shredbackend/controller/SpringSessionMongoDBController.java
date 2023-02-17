@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.http.HttpSession;
-import net.shredapp.shredbackend.model.Tricks;
 
 @RestController
 public class SpringSessionMongoDBController {
