@@ -175,6 +175,8 @@ const LayoutFlow = () => {
           node.className = "prog-node";
         } else if (checkValue.current) {
           node.className = "finished-node";
+        } else if (!progValue.current && !checkValue.current) {
+          node.className = "";
         }
       }
       return node;

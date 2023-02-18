@@ -50,7 +50,7 @@ export const initialNodes = [
   },
   {
     id: '7',
-    data: { label: 'Frontside 180', isChecked: false, inProgress: false, notes: "" },
+    data: { label: '180', isChecked: false, inProgress: false, notes: "" },
     position
   },
   {
@@ -65,7 +65,7 @@ export const initialNodes = [
   },
   {
     id: '10',
-    data: { label: 'Frontside 360', isChecked: false, inProgress: false, notes: "" },
+    data: { label: '360', isChecked: false, inProgress: false, notes: "" },
     position
   },
   {
@@ -86,7 +86,32 @@ export const initialNodes = [
   },
   {
     id: '14',
-    data: { label: 'Boardslide', isChecked: false, inProgress: false, notes: "" },
+    data: { label: 'Board Slide', isChecked: false, inProgress: false, notes: "" },
+    position
+  },
+  {
+    id: '15',
+    data: { label: 'Nose Slide', isChecked: false, inProgress: false, notes: "" },
+    position
+  },
+  {
+    id: '16',
+    data: { label: 'Tail Slide', isChecked: false, inProgress: false, notes: "" },
+    position
+  },
+  {
+    id: '17',
+    data: { label: 'Pretzel', isChecked: false, inProgress: false, notes: "" },
+    position
+  },
+  {
+    id: '18',
+    data: { label: '540', isChecked: false, inProgress: false, notes: "" },
+    position
+  },
+  {
+    id: '19',
+    data: { label: '720', isChecked: false, inProgress: false, notes: "" },
     position
   },
 ];
@@ -113,4 +138,12 @@ export const initialEdges = [
   { id: 'e5d-12', source: '5d', target: '12', type: edgeType },
   { id: 'e5d-13', source: '5d', target: '13', type: edgeType },
   { id: 'e11-14', source: '11', target: '14', type: edgeType },
+  { id: 'e14-15', source: '14', target: '15', type: edgeType },
+  { id: 'e14-16', source: '14', target: '16', type: edgeType },
+  { id: 'e15-17', source: '15', target: '17', type: edgeType },
+  { id: 'e16-17', source: '16', target: '17', type: edgeType },
+  { id: 'e7-10', source: '7', target: '10', type: edgeType },
+  { id: 'e10-18', source: '10', target: '18', type: edgeType },
+  { id: 'e9-19', source: '9', target: '19', type: edgeType },
+  { id: 'e18-19', source: '18', target: '19', type: edgeType },
 ];
