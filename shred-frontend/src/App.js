@@ -14,7 +14,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
-import { login, signup } from './trickService.js';
+import { login, signup, logout } from './trickService.js';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -23,26 +23,37 @@ function App() {
   const username = useRef("");
   const password = useRef("");
   const dialogKind = useRef("");
+  const flowRef = useRef(null);
 
+  //TODO: HANDLE FAILED ATTEMPS TO LOGIN OR SIGNUP
   const handleSubmit = useCallback(() => {
     if (dialogKind.current === "login") {
-
+      login({ username: username.current, password: password.current });
+      setLoggedIn(true);
     } else if (dialogKind.current === "signup") {
-
+      flowRef.current.toObj();
+      signup({ username: username.current, password: password.current, rfInstance: flowRef.current });
     }
+    setOpen(false);
   });
 
   return (
     <div className="App">
-      <HeaderComponent loggedIn={loggedIn} onLoginButton={() => {
-        setTitle("Login");
-        dialogKind.current = "login";
-        setOpen(true);
-      }}
+      <HeaderComponent
+        loggedIn={loggedIn}
+        onLoginButton={() => {
+          setTitle("Login");
+          dialogKind.current = "login";
+          setOpen(true);
+        }}
         onRegisterButton={() => {
           setTitle("Signup");
           dialogKind.current = "signup";
           setOpen(true);
+        }}
+        onLogoutButton={() => {
+          logout();
+          setLoggedIn(false);
         }} />
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>{title}</DialogTitle>
@@ -73,7 +84,7 @@ function App() {
       </Dialog>
       <div className="react-flow-container">
         <ReactFlowProvider>
-          <LayoutFlow />
+          <LayoutFlow ref={flowRef} />
         </ReactFlowProvider>
       </div>
       <FooterComponent />

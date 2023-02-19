@@ -54,7 +54,7 @@ public class WebSecurityConfig {
         .authorizeHttpRequests((requests) -> requests
             .requestMatchers("/**").permitAll()
             .anyRequest().authenticated())
-        .logout((logout) -> logout.permitAll());
+        .logout((logout) -> logout.permitAll().logoutSuccessUrl("/"));
 
     http.authenticationProvider(authenticationProvider());
     return http.build();

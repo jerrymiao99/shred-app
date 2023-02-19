@@ -14,9 +14,12 @@ const HeaderComponent = (props) => {
           Shred
         </Navbar.Brand>
         <Navbar.Collapse>
-          <Button variant="outline-info" onClick={props.onLoginButton}>
-            LOGINORLOGOUT</Button>
-          <Button variant="outline-info" onClick={props.onRegisterButton}>Signup</Button>
+          {props.loggedIn ? null : <Button variant="outline-info" onClick={props.onLoginButton}>
+            Login</Button>}
+          {props.loggedIn ? null : <Button variant="outline-info"
+            onClick={props.onRegisterButton}>Signup</Button>}
+          {props.loggedIn ? <Button variant="outline-info"
+            onClick={props.onLogoutButton}>Logout</Button> : null}
         </Navbar.Collapse>
       </Container>
     </Navbar>

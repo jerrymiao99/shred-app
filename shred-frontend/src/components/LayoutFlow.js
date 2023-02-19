@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, forwardRef, useImperativeHandle } from 'react';
 import ReactFlow, {
   addEdge, ConnectionLineType, useNodesState, useEdgesState,
   updateEdge, Background, useReactFlow,
@@ -67,7 +67,7 @@ const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
 
 const getNodeId = () => `randomnode_${+new Date()}`;
 
-const LayoutFlow = () => {
+const LayoutFlow = forwardRef((props, ref) => {
   const edgeUpdateSuccessful = useRef(true);
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
@@ -83,6 +83,12 @@ const LayoutFlow = () => {
   const checkValue = useRef(false);
   const progValue = useRef(false);
 
+  useImperativeHandle(ref, () => ({
+    toObj: () => {
+      ref.current = rfInstance.toObject();
+    }
+  }));
+
   const onConnect = useCallback(
     (params) =>
       setEdges((eds) =>
@@ -90,6 +96,7 @@ const LayoutFlow = () => {
       ),
     []);
 
+  //TODO: DO THE LOCAL VS ACCOUNT INSTANCE FETCH IMPLEMENTATION
   const onSave = useCallback(() => {
     if (rfInstance) {
       const flow = rfInstance.toObject();
@@ -281,6 +288,6 @@ const LayoutFlow = () => {
       </div>
     </div>
   );
-};
+});
 
 export default LayoutFlow;
