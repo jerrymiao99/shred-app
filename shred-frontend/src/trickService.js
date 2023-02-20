@@ -1,25 +1,25 @@
 import axios from 'axios'
 
-const REST_API_URL = 'http://localhost:5000';
+axios.defaults.baseURL = 'http://shredbackend-env.eba-xpyfdt8a.us-west-2.elasticbeanstalk.com';
 
 export const getFlow = (getRequest) => {
-  return axios.post(REST_API_URL + '/', getRequest);
+  return axios.post('/', getRequest);
 }
 
 export const saveFlow = (saveRequest) => {
-  return axios.put(REST_API_URL + '/', saveRequest);
+  return axios.put('/', saveRequest);
 }
 
 export const login = (loginRequest) => {
-  return axios.post(REST_API_URL + '/login', loginRequest);
+  return axios.post('/login', loginRequest);
 }
 
 export const signup = (signupRequest) => {
-  return axios.post(REST_API_URL + '/signup', signupRequest);
+  return axios.post('/signup', signupRequest);
 }
 
 export const logout = () => {
-  return axios.post(REST_API_URL + '/logout');
+  return axios.post('/logout');
 }
 
 
