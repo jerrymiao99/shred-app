@@ -8,6 +8,7 @@ import React, { useState, useCallback, useRef } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
+import Alert from '@mui/material/Alert';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
@@ -26,6 +27,8 @@ function App() {
   const rfVal = useRef(null);
   const flowRef = useRef(null);
   const loggedVal = useRef(false);
+  const [userTaken, setUserTaken] = useState(false);
+  const [wrongPass, setWrongPass] = useState(false);
 
   //TODO: HANDLE FAILED ATTEMPS TO LOGIN OR SIGNUP
   // const handleSubmit = useCallback(() => {
@@ -45,21 +48,39 @@ function App() {
   // });
 
   const handleSubmit = useCallback(() => {
+    if (userTaken) {
+      setUserTaken(false);
+    }
+    if (wrongPass) {
+      setWrongPass(false);
+    }
     if (dialogKind.current === "login") {
       const tryLogin = async () => {
-        await login({ username: username.current, password: password.current });
-        const flowResponse = await getFlow({ username: username.current, password: password.current });
-        rfVal.current = flowResponse.data;
-        flowRef.current.setFlow();
-        setLoggedIn(true);
-        loggedVal.current = true;
+        try {
+          await login({ username: username.current, password: password.current });
+          const flowResponse = await getFlow({ username: username.current, password: password.current });
+          rfVal.current = flowResponse.data;
+          flowRef.current.setFlow();
+          setLoggedIn(true);
+          loggedVal.current = true;
+          setOpen(false);
+        } catch (error) {
+          setWrongPass(true);
+        }
       }
       tryLogin();
     } else if (dialogKind.current === "signup") {
-      flowRef.current.toObj();
-      signup({ username: username.current, password: password.current, rfInstance: rfVal.current });
+      const trySignup = async () => {
+        flowRef.current.toObj();
+        try {
+          await signup({ username: username.current, password: password.current, rfInstance: rfVal.current });
+          setOpen(false);
+        } catch (error) {
+          setUserTaken(true);
+        }
+      }
+      trySignup();
     }
-    setOpen(false);
   });
 
   return (
@@ -67,11 +88,15 @@ function App() {
       <HeaderComponent
         loggedIn={loggedIn}
         onLoginButton={() => {
+          setUserTaken(false);
+          setWrongPass(false);
           setTitle("Login");
           dialogKind.current = "login";
           setOpen(true);
         }}
         onRegisterButton={() => {
+          setUserTaken(false);
+          setWrongPass(false);
           setTitle("Signup");
           dialogKind.current = "signup";
           setOpen(true);
@@ -104,6 +129,8 @@ function App() {
             }}
           />
         </DialogContent>
+        {userTaken ? <Alert severity="error">Sorry, this username is already taken.</Alert> : null}
+        {wrongPass ? <Alert severity="error">Wrong password.</Alert> : null}
         <DialogActions>
           <Button onClick={() => { setOpen(false); username.current = null; password.current = null }}>Cancel</Button>
           <Button onClick={handleSubmit}>Submit</Button>
