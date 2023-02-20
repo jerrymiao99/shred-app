@@ -11,17 +11,17 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 public class SpringSessionMongoDBController {
 
-  @GetMapping("/")
-  public ResponseEntity<Object> getNodesEdges(HttpSession session) {
-    return ResponseEntity.ok(session.getAttribute("tricks"));
-  }
+  // @GetMapping("/")
+  // public ResponseEntity<Object> getNodesEdges(HttpSession session) {
+  // return ResponseEntity.ok(session.getAttribute("tricks"));
+  // }
 
-  @PutMapping("/")
-  public ResponseEntity<Object> updateNodesEdges(HttpSession session,
-      @RequestBody Object t) {
-    session.setAttribute("tricks", t);
-    return ResponseEntity.ok(session.getAttribute("tricks"));
-  }
+  // @PutMapping("/")
+  // public ResponseEntity<Object> updateNodesEdges(HttpSession session,
+  // @RequestBody Object t) {
+  // session.setAttribute("tricks", t);
+  // return ResponseEntity.ok(session.getAttribute("tricks"));
+  // }
 
   // @PutMapping("/")
   // public ResponseEntity<Object> updateNodesEdges(HttpSession session) {

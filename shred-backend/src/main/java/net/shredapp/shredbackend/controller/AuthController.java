@@ -8,12 +8,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.shredapp.shredbackend.model.LoginRequest;
 import net.shredapp.shredbackend.model.SignupRequest;
+import net.shredapp.shredbackend.model.SaveRequest;
 import net.shredapp.shredbackend.model.User;
 import net.shredapp.shredbackend.repository.UserRepository;
 
@@ -27,6 +30,21 @@ public class AuthController {
 
   @Autowired
   BCryptPasswordEncoder encoder;
+
+  @PostMapping("/")
+  public ResponseEntity<Object> getFlow(@RequestBody LoginRequest getRequest) {
+    return ResponseEntity
+        .ok(userRepository.findByUsername(getRequest.getUsername()).getRfInstance());
+  }
+
+  @PutMapping("/")
+  public ResponseEntity<String> saveFlow(@RequestBody SaveRequest saveRequest) {
+    User user = userRepository.findByUsername(saveRequest.getUsername());
+    user.setRfInstance(saveRequest.getRfInstance());
+    userRepository.save(user);
+    return ResponseEntity
+        .ok("Save successful!");
+  }
 
   @PostMapping("/login")
   public ResponseEntity<String> authenticateUser(@RequestBody LoginRequest loginRequest) {

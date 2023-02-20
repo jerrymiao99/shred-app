@@ -9,7 +9,7 @@ import 'reactflow/dist/style.css';
 import { initialNodes, initialEdges } from '../nodes-edges.js';
 
 import '../index.css';
-import { getNodesEdges, updateNodesEdges } from '../trickService.js';
+import { saveFlow, getFlow } from '../trickService.js';
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -83,9 +83,25 @@ const LayoutFlow = forwardRef((props, ref) => {
   const checkValue = useRef(false);
   const progValue = useRef(false);
 
+  // useImperativeHandle(ref, () => ({
+  //   toObj: () => {
+  //     ref.current = rfInstance.toObject();
+  //   },
+  //   setFlow: () => {
+  //     setNodes(ref.current.nodes || []);
+  //     setEdges(ref.current.edges || []);
+  //     setViewport(ref.current.viewport);
+  //   }
+  // }), []);
+
   useImperativeHandle(ref, () => ({
     toObj: () => {
-      ref.current = rfInstance.toObject();
+      props.rfVal.current = rfInstance.toObject();
+    },
+    setFlow: () => {
+      setNodes(props.rfVal.current.nodes || []);
+      setEdges(props.rfVal.current.edges || []);
+      setViewport(props.rfVal.current.viewport);
     }
   }));
 
@@ -96,18 +112,36 @@ const LayoutFlow = forwardRef((props, ref) => {
       ),
     []);
 
-  //TODO: DO THE LOCAL VS ACCOUNT INSTANCE FETCH IMPLEMENTATION
   const onSave = useCallback(() => {
     if (rfInstance) {
       const flow = rfInstance.toObject();
-      updateNodesEdges(flow);
+      if (props.loggedVal.current) {
+        if (props.username.current && props.password.current) {
+          saveFlow({ username: props.username.current, rfInstance: flow })
+        }
+      } else {
+        localStorage.setItem("local-flow", JSON.stringify(flow));
+      }
     }
   }, [rfInstance]);
 
   const onRestore = useCallback(() => {
-    const restoreFlow = async () => {
-      const response = await getNodesEdges();
-      const flow = response.data;
+    if (props.loggedVal.current) {
+      const restoreFlow = async () => {
+        const response = await getFlow({ username: props.username.current, password: props.password.current });
+        const flow = response.data;
+        if (flow) {
+          const { x = 0, y = 0, zoom = 1 } = flow.viewport;
+          setNodes(flow.nodes || []);
+          setEdges(flow.edges || []);
+          setViewport({ x, y, zoom });
+        } else {
+          onReset();
+        }
+      }
+      restoreFlow();
+    } else {
+      const flow = JSON.parse(localStorage.getItem("local-flow"));
       if (flow) {
         const { x = 0, y = 0, zoom = 1 } = flow.viewport;
         setNodes(flow.nodes || []);
@@ -116,8 +150,7 @@ const LayoutFlow = forwardRef((props, ref) => {
       } else {
         onReset();
       }
-    };
-    restoreFlow();
+    }
   }, [setNodes, setViewport]);
 
   const onReset = useCallback(() => {
@@ -190,20 +223,20 @@ const LayoutFlow = forwardRef((props, ref) => {
     }));
   }, [setNodes]);
 
-  const onInit = useCallback((reactFlowInstance) => {
-    const restoreFlow = async () => {
-      const response = await getNodesEdges();
-      const flow = response.data;
-      if (flow) {
-        const { x = 0, y = 0, zoom = 1 } = flow.viewport;
-        reactFlowInstance.setNodes(flow.nodes || []);
-        reactFlowInstance.setEdges(flow.edges || []);
-        reactFlowInstance.setViewport({ x, y, zoom });
-      }
-    };
-    restoreFlow();
-    setRfInstance(reactFlowInstance);
-  }, [setNodes, setViewport]);
+  // const onInit = useCallback((reactFlowInstance) => {
+  //   const restoreFlow = async () => {
+  //     const response = await getNodesEdges();
+  //     const flow = response.data;
+  //     if (flow) {
+  //       const { x = 0, y = 0, zoom = 1 } = flow.viewport;
+  //       reactFlowInstance.setNodes(flow.nodes || []);
+  //       reactFlowInstance.setEdges(flow.edges || []);
+  //       reactFlowInstance.setViewport({ x, y, zoom });
+  //     }
+  //   };
+  //   restoreFlow();
+  //   setRfInstance(reactFlowInstance);
+  // }, [setNodes, setViewport]);
 
   return (
     <div className="layoutflow">
@@ -216,7 +249,7 @@ const LayoutFlow = forwardRef((props, ref) => {
         onEdgeUpdateStart={onEdgeUpdateStart}
         onEdgeUpdateEnd={onEdgeUpdateEnd}
         onConnect={onConnect}
-        onInit={onInit}
+        onInit={setRfInstance}
         onNodeClick={onNodeClick}
         proOptions={proOptions}
         connectionLineType={ConnectionLineType.Straight}
