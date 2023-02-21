@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = '//shredbackend-env.eba-xpyfdt8a.us-west-2.elasticbeanstalk.com';
+axios.defaults.baseURL = 'https://shredapp.click';
 
 export const getFlow = (getRequest) => {
   return axios.post('/', getRequest);
