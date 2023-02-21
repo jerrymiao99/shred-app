@@ -50,11 +50,13 @@ public class WebSecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
-        .cors().and().csrf().disable()
+        .csrf().disable()
         .authorizeHttpRequests((requests) -> requests
             .requestMatchers("/**").permitAll()
             .anyRequest().authenticated())
         .logout((logout) -> logout.permitAll().logoutSuccessUrl("/"));
+
+    http.cors();
 
     http.authenticationProvider(authenticationProvider());
     return http.build();
