@@ -11,11 +11,8 @@ import Dialog from '@mui/material/Dialog';
 import Alert from '@mui/material/Alert';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
-import { login, signup, logout, getFlow } from './trickService.js';
+import { login, signup, getFlow } from './trickService.js';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -29,23 +26,6 @@ function App() {
   const loggedVal = useRef(false);
   const [userTaken, setUserTaken] = useState(false);
   const [wrongPass, setWrongPass] = useState(false);
-
-  //TODO: HANDLE FAILED ATTEMPS TO LOGIN OR SIGNUP
-  // const handleSubmit = useCallback(() => {
-  //   if (dialogKind.current === "login") {
-  //     login({ username: username.current, password: password.current });
-  //     flowRef.current = getFlow({ username: username.current, password: password.current }).data;
-  //     flowRef.current.setFlow();
-  //     setLoggedIn(true);
-  //   } else if (dialogKind.current === "signup") {
-  //     flowRef.current.toObj();
-  //     signup({
-  //       username: username.current,
-  //       password: password.current, rfInstance: flowRef.current
-  //     });
-  //   }
-  //   setOpen(false);
-  // });
 
   const handleSubmit = useCallback(() => {
     if (userTaken) {
